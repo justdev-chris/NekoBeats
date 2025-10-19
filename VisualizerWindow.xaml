@@ -1,0 +1,11 @@
+<Window x:Class="NekoBeats.VisualizerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NekoBeats Visualizer" Height="200" Width="400"
+        WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent" Topmost="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Left="100" Top="100">
+    
+    <!-- No content - we do custom rendering in code -->
+</Window>
