@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,22 +19,19 @@ namespace NekoBeats
 
         private void Purrticles_Click(object sender, RoutedEventArgs e)
         {
-            // Create placeholder theme for now
-            ThemeManager.CurrentTheme = new PurrticlesTheme(); 
+            ThemeManager.CurrentTheme = new PurrticlesTheme();
             StatusText.Text = "🎵 Theme: Purr-ticles";
         }
 
         private void RetroArcade_Click(object sender, RoutedEventArgs e)
         {
-            // Create placeholder theme for now
-            ThemeManager.CurrentTheme = new RetroArcadeTheme(); 
+            ThemeManager.CurrentTheme = new RetroArcadeTheme();
             StatusText.Text = "🎵 Theme: Retro Arcade";
         }
 
         private void SpaceNebula_Click(object sender, RoutedEventArgs e)
         {
-            // Create placeholder theme for now
-            ThemeManager.CurrentTheme = new SpaceNebulaTheme(); 
+            ThemeManager.CurrentTheme = new SpaceNebulaTheme();
             StatusText.Text = "🎵 Theme: Space Nebula";
         }
 
