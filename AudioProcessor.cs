@@ -82,29 +82,28 @@ AudioDataUpdated?.Invoke(frequencyBands, fftResultsDouble);
             }
         }
 
-        private float[] ConvertToFrequencyBands()
+    private float[] ConvertToFrequencyBands()
+    {
+        var bands = new float[64]; // More bands for better resolution
+        int bandsPerGroup = fftResults.Length / bands.Length;
+
+        for (int i = 0; i < bands.Length; i++)
         {
-            var bands = new float[32];
-            int bandsPerGroup = fftResults.Length / bands.Length;
-
-            for (int i = 0; i < bands.Length; i++)
+            float sum = 0;
+            for (int j = 0; j < bandsPerGroup; j++)
             {
-                float sum = 0;
-                for (int j = 0; j < bandsPerGroup; j++)
-                {
-                    int index = i * bandsPerGroup + j;
-                    if (index < fftResults.Length)
-                    {
-                        sum += fftResults[index];
-                    }
-                }
-                bands[i] = sum / bandsPerGroup * 1000f;
-                bands[i] = Math.Min(bands[i], 100f);
+            int index = i * bandsPerGroup + j;
+            if (index < fftResults.Length)
+            {
+                sum += fftResults[index];
             }
-
-            return bands;
         }
+        bands[i] = sum / bandsPerGroup * 5000f; // Increased sensitivity
+        bands[i] = Math.Min(bands[i], 100f);
+    }
 
+    return bands;
+}
         private void StartMockData()
         {
             var random = new Random();
