@@ -19,22 +19,22 @@ namespace NekoBeats
         private void Purrticles_Click(object sender, RoutedEventArgs e)
         {
             // Create placeholder theme for now
-            ThemeManager.CurrentTheme = new GradientBarsTheme(); // Temporary
-            StatusText.Text = "🎵 Theme: Purr-ticles (Coming Soon)";
+            ThemeManager.CurrentTheme = new PurrticlesTheme(); 
+            StatusText.Text = "🎵 Theme: Purr-ticles";
         }
 
         private void RetroArcade_Click(object sender, RoutedEventArgs e)
         {
             // Create placeholder theme for now
-            ThemeManager.CurrentTheme = new GradientBarsTheme(); // Temporary
-            StatusText.Text = "🎵 Theme: Retro Arcade (Coming Soon)";
+            ThemeManager.CurrentTheme = new RetroArcadeTheme(); 
+            StatusText.Text = "🎵 Theme: Retro Arcade";
         }
 
         private void SpaceNebula_Click(object sender, RoutedEventArgs e)
         {
             // Create placeholder theme for now
-            ThemeManager.CurrentTheme = new GradientBarsTheme(); // Temporary
-            StatusText.Text = "🎵 Theme: Space Nebula (Coming Soon)";
+            ThemeManager.CurrentTheme = new SpaceNebulaTheme(); 
+            StatusText.Text = "🎵 Theme: Space Nebula";
         }
 
         private void DragVisualizer_Click(object sender, RoutedEventArgs e)
