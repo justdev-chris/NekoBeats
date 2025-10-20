@@ -50,7 +50,8 @@ namespace NekoBeats
             var frequencyBands = ConvertToFrequencyBands();
 
             // Notify subscribers
-            AudioDataUpdated?.Invoke(frequencyBands, fftResults);
+double[] fftResultsDouble = Array.ConvertAll(fftResults, x => (double)x);
+AudioDataUpdated?.Invoke(frequencyBands, fftResultsDouble);
         }
 
         private void ApplyFFT(float[] buffer)
