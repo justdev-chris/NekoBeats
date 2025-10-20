@@ -12,32 +12,27 @@ namespace NekoBeats
         {
             if (frequencies == null || frequencies.Length == 0) return;
 
-            double barWidth = 400.0 / frequencies.Length;
-            double maxHeight = 150;
+            double screenWidth = 1920; // Fullscreen width
+            double screenHeight = 1080; // Fullscreen height
+            double barWidth = screenWidth / frequencies.Length;
+            double maxHeight = screenHeight * 0.8;
 
             for (int i = 0; i < frequencies.Length; i++)
             {
-                double height = (frequencies[i] / 100.0) * maxHeight;
+                // Apply sensitivity boost
+                double boostedValue = frequencies[i] * 1.5;
+                double height = (boostedValue / 100.0) * maxHeight;
                 double x = i * barWidth;
-                double y = 200 - height;
+                double y = screenHeight - height;
 
-                // Dynamic gradient based on frequency intensity
-                var intensity = Math.Min(frequencies[i] / 100.0, 1.0);
-                var color1 = Color.FromRgb((byte)(0xff * intensity), 0x6a, 0x00);
+                // Dynamic gradient that pulses with intensity
+                var intensity = Math.Min(boostedValue / 100.0, 1.0);
+                var color1 = Color.FromRgb((byte)(0xff * intensity), (byte)(0x6a * intensity), 0x00);
                 var color2 = Color.FromRgb(0x9c, 0x27, (byte)(0xb0 * intensity));
 
                 var brush = new LinearGradientBrush(color1, color2, 90);
                 dc.DrawRectangle(brush, null, new Rect(x, y, barWidth - 1, height));
             }
-
-            // Draw NekoBeats text
-            var text = new FormattedText("NekoBeats", 
-                System.Globalization.CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface("Arial"),
-                12, 
-                Brushes.White);
-            dc.DrawText(text, new Point(10, 10));
         }
     }
 }
