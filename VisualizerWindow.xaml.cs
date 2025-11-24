@@ -16,13 +16,42 @@ namespace NekoBeats
         public VisualizerWindow()
         {
             InitializeComponent();
-            InitializeAudio();
+
+            // Avoid stealing focus from the control panel when the visualizer opens
+            ShowActivated = false;
+            Topmost = false;
+
+            // Delay heavy initialization until the window is loaded
+            Loaded += VisualizerWindow_Loaded;
+            Unloaded += VisualizerWindow_Unloaded;
+        }
+
+        private void VisualizerWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                InitializeAudio();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Visualizer audio init failed: {ex.Message}\n\n{ex.StackTrace}", "NekoBeats - Visualizer Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Continue without audio if initialization fails
+            }
+
             SetupRendering();
             ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
+        private void VisualizerWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            renderTimer?.Stop();
+            audioProcessor?.Dispose();
+        }
+
         private void InitializeAudio()
         {
+            // Wrap Audio initialization so exceptions don't crash startup
             audioProcessor = new AudioProcessor();
             audioProcessor.AudioDataUpdated += OnAudioDataUpdated;
         }
@@ -35,36 +64,34 @@ namespace NekoBeats
 
         private void SetupRendering()
         {
-            renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(33); // ~30 FPS
+            if (renderTimer != null) return;
+            renderTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(33) // ~30 FPS
+            };
             renderTimer.Tick += OnRenderFrame;
             renderTimer.Start();
         }
 
         private void OnThemeChanged(ITheme newTheme)
         {
-            // Force immediate redraw on theme change
             InvalidateVisual();
         }
 
         private void OnRenderFrame(object sender, EventArgs e)
         {
-            // Force redraw with latest audio data
             InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)
         {
-            // Clear with transparent background
             dc.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, ActualWidth, ActualHeight));
-            
-            // Render current theme with real audio data
             ThemeManager.CurrentTheme?.Render(dc, currentFrequencies, currentFFT);
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            try { this.DragMove(); } catch { }
         }
 
         protected override void OnClosed(EventArgs e)
