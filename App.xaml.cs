@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 
 namespace NekoBeats
@@ -8,20 +9,31 @@ namespace NekoBeats
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            // Make the control panel the main window so app lifetime is tied to it
+            // Ensure application lifetime is tied to the main control panel
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-            // Open Control Panel first and set it as the application's MainWindow
-            var mainWindow = new MainWindow();
-            MainWindow = mainWindow;
-            mainWindow.Show();
+            try
+            {
+                // Open Control Panel first and set it as the application's MainWindow
+                var mainWindow = new MainWindow();
+                MainWindow = mainWindow;
+                mainWindow.Show();
 
-            // Create Visualizer and make it owned by the control panel so it won't become the app's main window
-            Visualizer = new VisualizerWindow();
-            Visualizer.Owner = mainWindow;
-            // Don't let the visualizer steal activation when it is shown
-            Visualizer.ShowActivated = false;
-            Visualizer.Show();
+                // Create Visualizer after main window shown, make it owned so it won't become the app's main window
+                Visualizer = new VisualizerWindow
+                {
+                    Owner = mainWindow,
+                    ShowActivated = false // avoid stealing focus
+                };
+                Visualizer.Show();
+            }
+            catch (Exception ex)
+            {
+                // Surface startup exception so you can see the real problem immediately
+                MessageBox.Show($"Startup error: {ex.Message}\n\n{ex.StackTrace}", "NekoBeats - Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // If startup fails, shut down to avoid partial state
+                Shutdown();
+            }
         }
     }
 }
