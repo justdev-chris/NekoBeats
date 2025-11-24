@@ -14,32 +14,32 @@ namespace NekoBeats
         private void GradientBars_Click(object sender, RoutedEventArgs e)
         {
             ThemeManager.CurrentTheme = new GradientBarsTheme();
-            StatusText.Text = "🎵 Theme: Gradient Bars";
+            if (StatusText != null) StatusText.Text = "🎵 Theme: Gradient Bars";
         }
 
         private void Purrticles_Click(object sender, RoutedEventArgs e)
         {
             ThemeManager.CurrentTheme = new PurrticlesTheme();
-            StatusText.Text = "🎵 Theme: Purr-ticles";
+            if (StatusText != null) StatusText.Text = "🎵 Theme: Purr-ticles";
         }
 
         private void RetroArcade_Click(object sender, RoutedEventArgs e)
         {
             ThemeManager.CurrentTheme = new RetroArcadeTheme();
-            StatusText.Text = "🎵 Theme: Retro Arcade";
+            if (StatusText != null) StatusText.Text = "🎵 Theme: Retro Arcade";
         }
 
         private void SpaceNebula_Click(object sender, RoutedEventArgs e)
         {
             ThemeManager.CurrentTheme = new SpaceNebulaTheme();
-            StatusText.Text = "🎵 Theme: Space Nebula";
+            if (StatusText != null) StatusText.Text = "🎵 Theme: Space Nebula";
         }
 
         private void DragVisualizer_Click(object sender, RoutedEventArgs e)
         {
             if (App.Visualizer != null)
             {
-                App.Visualizer.DragMove();
+                try { App.Visualizer.DragMove(); } catch { /* ignore if not draggable right now */ }
             }
         }
 
@@ -47,8 +47,8 @@ namespace NekoBeats
         {
             if (App.Visualizer != null)
             {
-                App.Visualizer.Visibility = App.Visualizer.Visibility == Visibility.Visible 
-                    ? Visibility.Hidden 
+                App.Visualizer.Visibility = App.Visualizer.Visibility == Visibility.Visible
+                    ? Visibility.Hidden
                     : Visibility.Visible;
             }
         }
@@ -65,7 +65,7 @@ namespace NekoBeats
         protected override void OnClosed(EventArgs e)
         {
             // Clean up when control panel closes
-            App.Visualizer?.Close();
+            try { App.Visualizer?.Close(); } catch { }
             base.OnClosed(e);
         }
     }
